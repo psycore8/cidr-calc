@@ -3,8 +3,8 @@
 import sys
 import ipaddress
 
-Version = '0.0.1'
-spacer = 40
+Version = '0.0.2'
+spacer = 35
 subnet_octets = []
 
 def subnet_calc(ip_address=str, subnet=str):
@@ -20,8 +20,8 @@ def subnet_calc(ip_address=str, subnet=str):
     return {
         'IP Adress':            ip_address,
         'Subnet (decimal)':     subnet_dec,
-        'Subnet (binary)':      subnet_bin,
         'Subnet (inverse)':     subnet_inv,
+        'Subnet (binary)':      subnet_bin,
         'Subnet (inv-bin)':     subnet_inv_bin,
         'Network ID':           net_id,
         'Network Broadcast':    net_bc,
@@ -31,7 +31,9 @@ def subnet_calc(ip_address=str, subnet=str):
 def main():
     print(f'CIDR Calculator {Version}')
     if len(sys.argv) < 2:
+        print(f'Usage: {sys.argv[0]} IP_ADDRESS [NETMASK | CIDR]')
         print(f'Usage: {sys.argv[0]} 192.168.2.1 255.255.255.0')
+        print(f'Usage: {sys.argv[0]} 172.16.1.1 18')
         exit()
     net_data = subnet_calc(sys.argv[1], sys.argv[2])
     for key, value in net_data.items():
