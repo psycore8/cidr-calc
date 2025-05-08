@@ -3,9 +3,28 @@
 import sys
 import ipaddress
 
-Version = '0.0.2'
+Version = '0.0.4'
 spacer = 35
 subnet_octets = []
+args = []
+
+def argument_error():
+    print(f'Usage: {sys.argv[0]} IP_ADDRESS / [NETMASK | CIDR]')
+    print(f'Usage: {sys.argv[0]} 172.16.1.1/18')
+    print(f'Usage: {sys.argv[0]} 192.168.2.1/255.255.255.0')
+    exit()
+
+def has_2_arguments(Values=list):
+    if len(Values) < 1:
+        return True
+    else:
+        return False
+    
+def has_valid_arguments(Values=list):
+    if len(Values.split('/')) == 2:
+        return True
+    else:
+        return False
 
 def subnet_calc(ip_address=str, subnet=str):
     network = ipaddress.IPv4Network(f'{ip_address}/{subnet}', strict=False)
@@ -30,12 +49,11 @@ def subnet_calc(ip_address=str, subnet=str):
 
 def main():
     print(f'CIDR Calculator {Version}')
-    if len(sys.argv) < 2:
-        print(f'Usage: {sys.argv[0]} IP_ADDRESS [NETMASK | CIDR]')
-        print(f'Usage: {sys.argv[0]} 192.168.2.1 255.255.255.0')
-        print(f'Usage: {sys.argv[0]} 172.16.1.1 18')
-        exit()
-    net_data = subnet_calc(sys.argv[1], sys.argv[2])
+    if not has_2_arguments(sys.argv[1]) and not has_valid_arguments(sys.argv[1]):
+        argument_error()
+    ip_address = sys.argv[1].split('/')[0]
+    subnet = sys.argv[1].split('/')[1]
+    net_data = subnet_calc(ip_address, subnet)
     for key, value in net_data.items():
         print(f'{key}:'.ljust(spacer) + f'{value}')
 
